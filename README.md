@@ -29,8 +29,8 @@ sudo pacman -S rustup gtk4 gtk4-layer-shell libdbus brightnessctl wireplumber tt
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/Arifinn7/finnshell
-    cd finnshell
+    git clone https://github.com/Arifinn7/finshell
+    cd finshell
     ```
 
 2.  **Run the installer:**
