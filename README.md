@@ -14,7 +14,7 @@
 
 ---
 
-## ✨ Features
+# ✨ Features
 
 - **🚀 Workspaces:** Socket-based IPC (Hyprland v0.53+ support). Instant switching tanpa lag.
 - **🎵 MPRIS Player:** Integrasi media player (Spotify/Firefox) dengan play/pause control.
@@ -28,7 +28,7 @@
 
 ---
 
-## 📦 Installation
+# 📦 Installation
 
 ### Prerequisites
 Pastikan sistem Anda memiliki dependensi berikut:
@@ -39,24 +39,24 @@ Pastikan sistem Anda memiliki dependensi berikut:
 
 ### Build from Source
 
-# 1. Clone repository
+## 1. Clone repository
 ```bash
 git clone https://github.com/Arifinn7/finshell
 cd finshell
 ```
 
-# 2. Build Release Binary
+## 2. Build Release Binary
 ```bash
 cargo build --release
 ```
 
-# 3. Install (Copy to user bin)
+## 3. Install (Copy to user bin)
 ```bash
 cp target/release/finshell ~/.local/bin/
 ```
 
-## ⚙️ Configuration
-# 1. Finshell mencari konfigurasi di ~/.config/finshell/config.toml.
+# ⚙️ Configuration
+## 1. Finshell mencari konfigurasi di ~/.config/finshell/config.toml.
 Basic Configuration (config.toml)
 
 ```bash
@@ -89,7 +89,7 @@ Anda bisa mengubah tampilan sepenuhnya di style.css. Contoh:
 }
 ```
 
-## 🛠️ Troubleshooting
+# 🛠️ Troubleshooting
 
 ### Q: Bar tidak muncul / Error Socket not found?
 ### A: Pastikan Anda menjalankan finshell di dalam sesi Hyprland. Finshell membutuhkan variabel environment HYPRLAND_INSTANCE_SIGNATURE yang disediakan otomatis oleh Hyprland.
@@ -101,10 +101,10 @@ Anda bisa mengubah tampilan sepenuhnya di style.css. Contoh:
 ### A: Pastikan wireplumber atau pipewire-pulse berjalan. Coba jalankan wpctl status di terminal.
 
 
-## 🤝 Contributing
+# 🤝 Contributing
 
 Kontribusi sangat diterima! Silakan baca CONTRIBUTING.md untuk panduan pengembangan.
 
 
-## 📄 License
+# 📄 License
 Project ini dilisensikan di bawah MIT License.
