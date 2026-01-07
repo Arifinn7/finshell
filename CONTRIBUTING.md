@@ -14,17 +14,20 @@ Terima kasih atas minat Anda untuk berkontribusi! Dokumen ini akan memandu Anda 
 3. **Run in Debug Mode:**
    ```bash
    RUST_LOG=debug cargo run
-🧪 Coding Standards
+
+## 🧪 Coding Standards
 Formatting: Kami menggunakan rustfmt. Jalankan cargo fmt sebelum commit.
 Linting: Pastikan kode bersih dari warning. Jalankan cargo clippy.
 Async/Threading: Jangan pernah memblokir main thread GTK. Gunakan std::thread::spawn untuk operasi I/O dan kirim data kembali via channel.
-📝 Pull Request Process
+
+## 📝 Pull Request Process
 Buat branch fitur baru (git checkout -b feature/AmazingFeature).
 Commit perubahan Anda dengan pesan yang jelas (Conventional Commits direkomendasikan).
 Contoh: feat(audio): add support for microphone mute
 Push ke branch Anda.
 Buka Pull Request dan deskripsikan perubahan yang Anda buat.
-🐛 Reporting Bugs
+
+## 🐛 Reporting Bugs
 Jika menemukan bug, silakan buka Issue dengan menyertakan:
 Output terminal (cargo run).
 Versi Hyprland dan OS yang digunakan.
