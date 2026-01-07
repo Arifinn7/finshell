@@ -1,0 +1,257 @@
+/* Konfigurasi Window Utama */
+window {
+    background-color: transparent;
+}
+
+/* Bar Container */
+.main-bar {
+    /* Warna Gelap Transparan (Catppuccin Mocha Base) */
+    background-color: rgba(30, 30, 46, 0.6); 
+    color: #cdd6f4;
+    
+    /* Layout positioning */
+    margin-top: 5px; 
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 0px;
+    
+    /* Border & Shadow */
+    border-radius: 12px;
+    min-height: 40px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+}
+
+/* --- CLOCK WIDGET --- */
+.clock-widget {
+    font-weight: bold;
+    font-size: 14px;
+    background-color: #313244; /* Surface0 */
+    color: #cdd6f4;
+    padding: 0px 15px;
+    border-radius: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* --- WORKSPACES WIDGET --- */
+.workspaces-widget {
+    background-color: #313244; /* Surface0 */
+    border-radius: 8px;
+    padding: 2px; /* Sedikit padding agar tombol tidak nempel border */
+    margin: 5px;
+    margin-left: 15px; /* Jarak dari pinggir kiri bar */
+}
+
+/* Tombol Workspace Individual */
+.workspace-button {
+    background: transparent;
+    color: #cdd6f4;
+    border: none;
+    box-shadow: none;
+    padding: 0 10px;
+    font-weight: bold;
+    border-radius: 6px;
+    margin: 0 2px; /* Jarak antar tombol */
+    transition: all 0.2s ease-in-out; /* Animasi halus */
+}
+
+/* Efek Hover (Saat mouse di atas tombol) */
+.workspace-button:hover {
+    background-color: #45475a; /* Surface1 */
+    color: #ffffff;
+}
+
+/* Efek Active (Workspace yang sedang dipakai) */
+.workspace-button.active {
+    background-color: #89b4fa; /* Blue */
+    color: #1e1e2e; /* Base (Gelap) agar kontras */
+    font-weight: 800; /* Lebih tebal */
+}
+
+/* --- BATTERY WIDGET --- */
+.battery-widget {
+    background-color: #313244;
+    color: #cdd6f4;
+    padding: 0px 12px;
+    border-radius: 8px;
+    margin: 5px;
+    font-weight: bold;
+    /* Animasi transisi warna halus */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Sedang Ngecas (Hijau) */
+.battery-widget.charging {
+    background-color: #a6e3a1; 
+    color: #1e1e2e; /* Teks jadi gelap biar terbaca */
+}
+
+/* Baterai Rendah < 30% (Kuning) */
+.battery-widget.low {
+    background-color: #f9e2af;
+    color: #1e1e2e;
+}
+
+/* Baterai Kritis < 15% (Merah & Berdenyut) */
+.battery-widget.critical {
+    background-color: #f38ba8;
+    color: #1e1e2e;
+    animation: blink 1s infinite; /* Berkedip */
+}
+
+/* Animasi Kedip untuk Kritis */
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* --- AUDIO WIDGET --- */
+.audio-widget {
+    background-color: #313244;
+    color: #cdd6f4;
+    padding: 0px 12px;
+    border-radius: 8px;
+    margin: 5px;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+/* Saat di-hover mouse, ganti warna biar tahu bisa diklik */
+.audio-widget:hover {
+    background-color: #45475a;
+}
+
+/* Saat Muted (Merah) */
+.audio-widget.muted {
+    background-color: #f38ba8;
+    color: #1e1e2e;
+    text-decoration: line-through; /* Coret teks */
+}
+
+/* --- MPRIS (MUSIC) WIDGET --- */
+.mpris-widget {
+    background-color: #cba6f7; /* Warna Ungu (Catppuccin Mauve) */
+    color: #1e1e2e; /* Teks gelap biar kontras */
+    padding: 0px 15px;
+    border-radius: 8px;
+    margin: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.mpris-widget:hover {
+    background-color: #d8b4fe; /* Lebih terang dikit pas hover */
+}
+
+/* Kalau sedang Pause, warnanya jadi redup */
+.mpris-widget.paused {
+    background-color: #45475a; /* Surface 1 */
+    color: #cdd6f4; /* Text Putih */
+    font-style: italic;
+}
+
+/* --- NETWORK WIDGET --- */
+.network-widget {
+    background-color: #313244;
+    color: #cdd6f4;
+    padding: 0px 12px;
+    border-radius: 8px;
+    margin: 5px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.network-widget:hover {
+    background-color: #45475a;
+}
+
+/* WiFi Connected (Biru Sapphire) */
+.network-widget.wifi {
+    color: #74c7ec;
+}
+
+/* Ethernet (Lavender) */
+.network-widget.ethernet {
+    color: #b4befe;
+}
+
+/* Disconnected (Abu-abu / Merah) */
+.network-widget.disconnected {
+    color: #f38ba8;
+    background-color: #313244;
+    opacity: 0.7;
+}
+
+/* --- SYS INFO WIDGET --- */
+.sys-info-widget {
+    background-color: #313244;
+    padding: 0px 12px;
+    border-radius: 8px;
+    margin: 5px;
+    font-weight: bold;
+}
+
+.cpu-label {
+    color: #fab387; /* Peach */
+    margin-right: 5px;
+}
+
+.ram-label {
+    color: #f5c2e7; /* Pink */
+}
+
+/* Warning State (Jika load tinggi) */
+.sys-info-widget.high-load {
+    background-color: #f38ba8; /* Merah Background */
+}
+.sys-info-widget.high-load .cpu-label,
+.sys-info-widget.high-load .ram-label {
+    color: #1e1e2e; /* Teks jadi hitam */
+}
+
+/* --- POWER WIDGET --- */
+.power-widget-container {
+    background-color: #313244;
+    border-radius: 8px;
+    margin: 5px;
+    padding: 2px;
+}
+
+/* Tombol Utama ⏻ */
+.power-main-btn {
+    background: transparent;
+    color: #f38ba8; /* Merah */
+    border: none;
+    box-shadow: none;
+    font-size: 16px;
+    padding: 0 10px;
+    font-weight: bold;
+    border-radius: 6px;
+}
+.power-main-btn:hover {
+    background-color: #45475a;
+}
+
+/* Container Tombol Rahasia */
+.power-actions {
+    padding-right: 5px; /* Jarak antara sub-tombol dan tombol utama */
+}
+
+/* Tombol Sub (Logout, Reboot, Shutdown) */
+.power-sub-btn {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0 8px;
+    border-radius: 4px;
+    margin: 0 2px;
+}
+.power-sub-btn:hover {
+    background-color: #45475a;
+}
+
+/* Warna Spesifik */
+.power-sub-btn.logout { color: #89b4fa; } /* Biru */
+.power-sub-btn.reboot { color: #fab387; } /* Orange */
+.power-sub-btn.shutdown { color: #f38ba8; } /* Merah */

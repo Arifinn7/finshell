@@ -1,114 +1,131 @@
-use gtk::prelude::*;
-use gtk::{Application, ApplicationWindow, Box, Button, CenterBox, Orientation, CssProvider};
-use gtk4_layer_shell::{Edge, Layer, LayerShell};
-use gdk::Display;
-use gtk::style_context_add_provider_for_display;
-use std::path::PathBuf;
+mod modules;
+mod config; // <-- Panggil file config baru
 
-mod workspaces;
-mod clock;
-mod player;
-mod system;
-mod apps;
-mod launcher;
-mod osd;
-mod powermenu;
-mod utils;
-mod dashboard;
+use gtk4::prelude::*;
+use gtk4::{
+    Application, ApplicationWindow, CenterBox, CssProvider, gdk, Box, Orientation
+};
+use gtk4_layer_shell::{Layer, LayerShell, Edge};
 
-fn main() {
-    let app = Application::builder()
-        .application_id("com.my.rust_shell")
-        .build();
+// Import semua modul
+use modules::clock::ClockModule;
+use modules::workspaces::WorkspacesModule;
+use modules::battery::BatteryModule;
+use modules::WidgetModule;
+use config::Config;
+use modules::audio::AudioModule;
+use modules::mpris::MprisModule;
+use modules::network::NetworkModule;
+use modules::sys_info::SysInfoModule;
+use modules::power::PowerModule;
 
-    app.connect_activate(build_ui);
-    app.connect_startup(|_| load_css());
-    
-    app.run();
+// --- PABRIK MODUL (Module Factory) ---
+// Fungsi ini menerjemahkan string "clock" menjadi Widget Clock
+fn create_module(name: &str) -> Option<gtk4::Widget> {
+    match name {
+        "workspaces" => Some(WorkspacesModule.build_widget()),
+        "clock" => Some(ClockModule.build_widget()),
+        "battery" => Some(BatteryModule.build_widget()),
+        "audio" => Some(AudioModule.build_widget()),
+        "mpris" => Some(MprisModule.build_widget()),
+        "network" => Some(NetworkModule.build_widget()),
+        "sys_info" => Some(SysInfoModule.build_widget()),
+        "power" => Some(PowerModule.build_widget()),
+        "spacer" => {
+            // Widget kosong untuk peregang jarak (opsional)
+            let spacer = Box::new(Orientation::Horizontal, 0);
+            spacer.set_hexpand(true);
+            Some(spacer.upcast())
+        },
+        _ => {
+            eprintln!("Warning: Modul '{}' tidak dikenal", name);
+            None
+        }
+    }
 }
 
-fn build_ui(app: &Application) {
-    // 1. SETUP WINDOWS
-    osd::create_osd_window(app);
-    let launcher_win = launcher::create_launcher_window(app);
-    let power_win = powermenu::create_powermenu_window(app);
-    let dashboard_win = dashboard::create_dashboard_window(app);
-
-    // 2. SETUP BAR
-    let window = ApplicationWindow::builder()
-        .application(app)
-        .title("Rust Shell Bar")
-        .build();
-
-    window.init_layer_shell();
-    window.set_layer(Layer::Top);
-    window.set_anchor(Edge::Top, true);
-    window.set_anchor(Edge::Left, true);
-    window.set_anchor(Edge::Right, true);
-    window.auto_exclusive_zone_enable();
-
-    let center_box = CenterBox::new();
-    center_box.set_widget_name("main-bar");
-
-    // --- KIRI ---
-    let left_box = Box::new(Orientation::Horizontal, 10);
-    let menu_btn = Button::with_label("");
-    menu_btn.set_widget_name("menu-button");
-    let l_win_clone = launcher_win.clone();
-    menu_btn.connect_clicked(move |_| {
-        if l_win_clone.is_visible() { l_win_clone.set_visible(false); }
-        else { l_win_clone.set_visible(true); l_win_clone.present(); }
-    });
-    left_box.append(&menu_btn);
-    left_box.append(&workspaces::create_workspace_widget());
-    center_box.set_start_widget(Some(&left_box));
-
-    // --- TENGAH ---
-    let clock_btn = clock::create_clock_widget();
-    let d_win_clone = dashboard_win.clone();
-    clock_btn.connect_clicked(move |_| {
-        if d_win_clone.is_visible() { d_win_clone.set_visible(false); }
-        else { d_win_clone.set_visible(true); d_win_clone.present(); }
-    });
-    center_box.set_center_widget(Some(&clock_btn));
-
-    // --- KANAN ---
-    let right_box = Box::new(Orientation::Horizontal, 10);
-    right_box.set_halign(gtk::Align::End);
-    right_box.append(&system::create_system_widget());
-    right_box.append(&player::create_player_widget());
-
-    let power_btn = Button::with_label("");
-    power_btn.set_widget_name("power-button");
-    let p_win_clone = power_win.clone();
-    power_btn.connect_clicked(move |_| { p_win_clone.set_visible(true); p_win_clone.present(); });
-    right_box.append(&power_btn);
-
-    center_box.set_end_widget(Some(&right_box));
-    window.set_child(Some(&center_box));
-    window.present();
+// Fungsi helper untuk mengisi kotak (kiri/tengah/kanan) berdasarkan config
+fn fill_box(container: &Box, module_names: &Option<Vec<String>>) {
+    if let Some(names) = module_names {
+        for name in names {
+            if let Some(widget) = create_module(name) {
+                container.append(&widget);
+            }
+        }
+    }
 }
 
 fn load_css() {
-    let display = Display::default().expect("Error: Tidak bisa connect ke Wayland display.");
     let provider = CssProvider::new();
-    
-    // PERBAIKAN FINAL: Memuat CSS dari ~/.config/rust_shell/style.css
-    // Ini agar aplikasi tetap cantik dimanapun ia dijalankan.
-    let mut path = PathBuf::from(std::env::var("HOME").unwrap_or_default());
-    path.push(".config/rust_shell/style.css");
+    provider.load_from_path("style.css");
 
-    // Fallback: Jika di folder config tidak ada, coba cari di folder saat ini (untuk dev)
-    if !path.exists() {
-        println!("Config tidak ditemukan di {:?}, mencoba lokal ./style.css", path);
-        path = PathBuf::from("style.css");
-    }
-
-    provider.load_from_path(path.to_str().unwrap());
-
-    style_context_add_provider_for_display(
-        &display,
+    gtk4::style_context_add_provider_for_display(
+        &gdk::Display::default().expect("Gagal mendapatkan display GDK"),
         &provider,
-        gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION,
     );
+}
+
+fn main() {
+    let app = Application::builder()
+        .application_id("com.arifinn7.finshell")
+        .build();
+
+    app.connect_activate(|app| {
+        // 1. Load Config
+        let config = Config::load();
+        
+        load_css();
+
+        let window = ApplicationWindow::builder()
+            .application(app)
+            .title("Finshell")
+            .build();
+
+        // 2. Setup Layer Shell berdasarkan Config
+        window.init_layer_shell();
+        window.set_namespace("finshell");
+        window.set_layer(Layer::Top);
+        
+        // Atur posisi (Top/Bottom)
+        let position = config.bar.position.as_deref().unwrap_or("top");
+        let is_bottom = position == "bottom";
+        
+        window.set_anchor(if is_bottom { Edge::Bottom } else { Edge::Top }, true);
+        window.set_anchor(Edge::Left, true);
+        window.set_anchor(Edge::Right, true);
+        
+        // Atur Tinggi
+        if let Some(h) = config.bar.height {
+            window.set_height_request(h);
+        }
+
+        window.auto_exclusive_zone_enable();
+
+        // 3. Layout Utama
+        let center_box = CenterBox::new();
+        center_box.add_css_class("main-bar");
+
+        // --- KONSTRUKSI DINAMIS ---
+        
+        // Kiri
+        let left_box = Box::new(Orientation::Horizontal, 5);
+        fill_box(&left_box, &config.modules.left);
+        center_box.set_start_widget(Some(&left_box));
+
+        // Tengah
+        let mid_box = Box::new(Orientation::Horizontal, 5);
+        fill_box(&mid_box, &config.modules.center);
+        center_box.set_center_widget(Some(&mid_box));
+
+        // Kanan
+        let right_box = Box::new(Orientation::Horizontal, 5);
+        fill_box(&right_box, &config.modules.right);
+        center_box.set_end_widget(Some(&right_box));
+
+        window.set_child(Some(&center_box));
+        window.present();
+    });
+
+    app.run();
 }

@@ -1,26 +1,19 @@
 [package]
-name = "rust_shell"
+name = "finshell"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-# UI Library
-gtk = { version = "0.8", package = "gtk4" }
-gtk4-layer-shell = "0.3"
-gdk = { version = "0.8", package = "gdk4" }
-glib = "0.19" # Penting untuk manajemen thread GTK
+# GUI Framework
+gtk4 = { version = "0.9", features = ["v4_12"] }
+gtk4-layer-shell = "0.4"
+
+# Core Utilities
+# UPDATE DI SINI: Naikkan glib ke 0.20 agar cocok dengan GTK4
+glib = "0.20" 
+
 chrono = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
 mpris = "2.0"
-sysinfo = "0.30"
-walkdir = "2"
-
-# Hyprland Interaction
-# Kita gunakan versi beta.3 yang kompatibel dengan Hyprland 0.53+
-# Fitur "v1" dihapus karena menyebabkan error
-hyprland = { version = "0.4.0-beta.3" }
-
-# Async Runtime
-tokio = { version = "1", features = ["full"] }
-
-# Utilities
-async-channel = "2.3"

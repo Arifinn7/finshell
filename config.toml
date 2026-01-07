@@ -1,0 +1,12 @@
+# Pengaturan Tampilan Bar
+[bar]
+position = "top"    # Pilihan: top, bottom, left, right
+height = 45         # Tinggi bar dalam pixel
+background = "rgba(30, 30, 46, 0.8)" # Bisa di-override CSS
+
+# Pengaturan Tata Letak Modul
+# Nama modul yang tersedia: "workspaces", "clock", "battery", "spacer"
+[modules]
+left = ["workspaces"]
+center = ["mpris", "clock"]
+right = ["sys_info", "network", "audio", "battery", "power"]
