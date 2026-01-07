@@ -91,14 +91,14 @@ Anda bisa mengubah tampilan sepenuhnya di style.css. Contoh:
 
 ## 🛠️ Troubleshooting
 
-# Q: Bar tidak muncul / Error Socket not found?
-# A: Pastikan Anda menjalankan finshell di dalam sesi Hyprland. Finshell membutuhkan variabel environment HYPRLAND_INSTANCE_SIGNATURE yang disediakan otomatis oleh Hyprland.
+### Q: Bar tidak muncul / Error Socket not found?
+### A: Pastikan Anda menjalankan finshell di dalam sesi Hyprland. Finshell membutuhkan variabel environment HYPRLAND_INSTANCE_SIGNATURE yang disediakan otomatis oleh Hyprland.
 
-# Q: Network status "Offline" padahal connect?
-# A: Finshell menggunakan nmcli. Pastikan networkmanager terinstall dan berjalan.
+### Q: Network status "Offline" padahal connect?
+### A: Finshell menggunakan nmcli. Pastikan networkmanager terinstall dan berjalan.
 
-# Q: Audio widget tidak merespon?
-# A: Pastikan wireplumber atau pipewire-pulse berjalan. Coba jalankan wpctl status di terminal.
+### Q: Audio widget tidak merespon?
+### A: Pastikan wireplumber atau pipewire-pulse berjalan. Coba jalankan wpctl status di terminal.
 
 
 ## 🤝 Contributing
